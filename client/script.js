@@ -25,3 +25,12 @@ function typeText(element, text){
         }
     }, 20)
 }
+
+function generateUniqueId(){
+    const timestamp = new Date();
+    const randomNumber = Math.random();
+    const hexaString = randomNumber.toString(16);
+
+    return `id-${timestamp}-${hexaString}`;
+    // return timestamp.getTime() + hexaString.slice(2);
+}
