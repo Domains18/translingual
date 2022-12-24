@@ -12,7 +12,7 @@ function loader(element){
         if (element.textContent.length > 4){
             element.textContent = "";
         }
-    }, 300)
+    }, 300);
 }
 
 function typeText(element, text){
@@ -23,7 +23,7 @@ function typeText(element, text){
         if (i >= text.length){
             clearInterval(interval);
         }
-    }, 20)
+    }, 20);
 }
 
 function generateUniqueId(){
@@ -33,4 +33,17 @@ function generateUniqueId(){
 
     return `id-${timestamp}-${hexaString}`;
     // return timestamp.getTime() + hexaString.slice(2);
+}
+
+function chatStripe(isAi, value, uniqueId) {
+    return (
+        ` <div class="wrapper ${isAi && 'ai'}">
+            <div class="chat">
+                <div class="profile">
+                    <img src="${isAi ? bot : user}" alt="profile"/>
+                </div>
+                <div class="message" id=${uniqueId}>${value}</div>
+            </div>
+        </div>`
+    );
 }
