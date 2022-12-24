@@ -2,9 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "description": " A server backend for the project",
-  "main": "index.js",
+  "type" : "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon server"
+
   },
   "keywords": [],
   "author": "Gibsons Gibson",
