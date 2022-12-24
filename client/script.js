@@ -82,6 +82,19 @@ const handleSubmit = async (e)=>{
     const messageDiv = document.getElementById(uniqueId);
     console.log(uniqueId)
     loader(messageDiv);
+
+    // fetch data from the server
+    const response = await fetch ( 'http://localhost:3000',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }, 
+        body: JSON.stringify({
+            prompt: data.get('prompt')
+        })
+    });
+    clearInterval(loadInterval);
+    messageDiv.innerHTML = '';
 }
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) =>{
