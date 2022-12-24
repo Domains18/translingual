@@ -9,25 +9,26 @@ function loader(element){
     element.textContent = '';
     loadInterval = setInterval(()=>{
         element.textContent += '.';
-        if (element.textContent.length > 4){
+        if ( element.textContent === '......'){
             element.textContent = "";
         }
     }, 300);
 }
 
 function typeText(element, text){
-    let i = 0;
+    let index = 0;
     let interval = setInterval(()=>{
-        element.textContent += text[i];
-        i++;
-        if (i >= text.length){
+        if(index < text.length){
+            element.innerHTML += text.chartAt(index);
+            index++;
+        } else{
             clearInterval(interval);
         }
     }, 20);
 }
 
 function generateUniqueId(){
-    const timestamp = new Date();
+    const timestamp = Date.now();
     const randomNumber = Math.random();
     const hexaString = randomNumber.toString(16);
 
@@ -49,6 +50,7 @@ function chatStripe(isAi, value, uniqueId) {
 }
 const handleSubmit = async (e)=>{
     e.preventDefault();
+    //user stripe
     const data = FormData(form);
     chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
     form.reset();
@@ -64,7 +66,7 @@ const handleSubmit = async (e)=>{
     form.addEventListener('submit', handleSubmit);
     form.addEventListener('keyup', (e) =>{
         if(e.keyCode === 13){
-            handleSubmit(e);
+            handleSubmit(e)
         }
     });
 }
