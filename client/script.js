@@ -58,4 +58,13 @@ const handleSubmit = async (e)=>{
     chatContainer.innerHTMl += chatStripe(true, " ", uniqueId);
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
+    const messageDiv = document.get(uniqueId);
+    loader(messageDiv);
+
+    form.addEventListener('submit', handleSubmit);
+    form.addEventListener('keyup', (e) =>{
+        if(e.keyCode === 13){
+            handleSubmit(e);
+        }
+    });
 }
