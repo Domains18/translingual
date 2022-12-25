@@ -3,19 +3,19 @@ import user from './assets/user.svg';
 
 const form = document.querySelector('form');
 const chatContainer = document.getElementById('chat_container');
-console.log(chatContainer)
+// console.log(chatContainer)
 let loadInterval;
 
 function loader(elements){
     for(var i = 0; i < elements.length; i++){
-        if (elements[i]) {
+        if (elements[i] > 4) {
             elements[i].textContent = '';
         }
     }
     
     loadInterval = setInterval(() => {
         for(var i = 0; i < elements.length; i++){
-            if (elements[i]) {
+            if (elements[i] === "....") {
                 elements[i].textContent += '.';
             }
         }
@@ -95,6 +95,18 @@ const handleSubmit = async (e)=>{
     });
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
+
+    if (response.ok){
+        const data = await response.json();
+        const parseData = data.bot.trim();
+
+        typeText(messageDiv, parseData);
+    } else{
+        const err = await response.text();
+
+        messageDiv.innerHTML= " Internal Error";
+        window.alert(err);
+    }
 }
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) =>{
