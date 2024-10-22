@@ -20,7 +20,6 @@ ASSISTANT_ID=your_openai_assistant_id
 
 - Install backend  dependencies
 ```bash
-cd server
 pnpm install
 ```
 
@@ -29,12 +28,8 @@ pnpm install
 pnpm run start:dev
 ```
 
-- navigate to the frontend directory
-```bash
-cd ../client
-```
 
-- Open the index.html file in your browser
+- Open the index.html file  in the client repository in your browser
 
 
 ## Usage
@@ -44,4 +39,3 @@ cd ../client
 
 ## Issues
 - If you encounter any issues while using the app, please create an issue in the repository.
-
