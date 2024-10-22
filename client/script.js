@@ -1,116 +1,52 @@
-import bot from './assets/bot.svg';
-import user from './assets/user.svg';
+document.getElementById('translateBtn').addEventListener('click', async () => {
+    const inputText = document.getElementById('inputText').value;
+    const translateBtn = document.getElementById('translateBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const outputDiv = document.getElementById('translationOutput');
 
-const form = document.querySelector('form');
-const chatContainer = document.getElementById('chat_container');
-// console.log(chatContainer)
-let loadInterval;
-
-function loader(elements){
-    for(var i = 0; i < elements.length; i++){
-        if (elements[i] > 4) {
-            elements[i].textContent = '';
-        }
+    if (!inputText) {
+        alert('Please enter some text.');
+        return;
     }
-    
-    loadInterval = setInterval(() => {
-        for(var i = 0; i < elements.length; i++){
-            if (elements[i] === "....") {
-                elements[i].textContent += '.';
-            }
-        }
-        for(var i = 0; i < elements.length; i++){
-            if (elements[i] && elements[i].textContent === '......'){
-                elements[i].textContent = "";
-            }
-        }
-    }, 300);
-}
 
+    translateBtn.disabled = true;
+    loadingSpinner.style.display = 'block';
+    outputDiv.innerHTML = '';
 
-function typeText(element, text){
-    let index = 0;
-    let interval = setInterval(()=>{
-        if(index < text.length){
-            element.innerHTML += text.charAt(index);
-            index++; 
-        } else{
-            clearInterval(interval);
-        }
-    }, 20);
-}
+    try {
+        const response = await fetch('http://localhost:3000/api/app/message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                threadId: 'thread_PLfrTPqCNPxeZptOxzhqZEsV',  
+                message: inputText
+            }),
+        });
 
-function generateUniqueId(){
-    const timestamp = Date.now();
-    const randomNumber = Math.random();
-    const hexaString = randomNumber.toString(16);
-
-    return `id-${timestamp}-${hexaString}`;
-    // return timestamp.getTime() + hexaString.slice(2);
-}
-
-function chatStripe(isAi, value, uniqueId) {
-    return (
-        `
-        <div class="wrapper ${isAi && 'ai'}">
-            <div class="chat">
-                <div class="profile">
-                    <img 
-                      src=${isAi ? bot : user} 
-                      alt="${isAi ? 'bot' : 'user'}" 
-                    />
-                </div>
-                <div class="message" id=${uniqueId}>${value}</div>
-            </div>
-        </div>
-    `
-    );
-}
-const handleSubmit = async (e)=>{
-    e.preventDefault();
-    const data = new FormData(form);
-    //user stripe
-    chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
-    form.reset();
-
-    // bot chatstripe
-    const uniqueId = generateUniqueId();
-    chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
-
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-
-    const messageDiv = document.getElementById(uniqueId);
-    console.log(uniqueId)
-    loader(messageDiv);
-
-    // fetch data from the server
-    const response = await fetch ( 'http://localhost:3000',{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }, 
-        body: JSON.stringify({
-            prompt: data.get('prompt')
-        })
-    });
-    clearInterval(loadInterval);
-    messageDiv.innerHTML = '';
-
-    if (response.ok){
         const data = await response.json();
-        const parseData = data.bot.trim();
+        const messages = data.messages[0][0].text.value;
 
-        typeText(messageDiv, parseData);
-    } else{
-        const err = await response.text();
-
-        messageDiv.innerHTML= " Internal Error";
-        window.alert(err);
-    }
-}
-form.addEventListener('submit', handleSubmit);
-form.addEventListener('keyup', (e) =>{
-    if(e.keyCode === 13){
-            handleSubmit(e)
+        spellOutText(messages, outputDiv);
+    } catch (error) {
+        outputDiv.innerHTML = 'Error processing request.';
+    } finally {
+        translateBtn.disabled = false;
+        loadingSpinner.style.display = 'none';
     }
 });
+
+function spellOutText(text, outputDiv) {
+    const words = text.split(' ');
+    let wordIndex = 0;
+
+    const interval = setInterval(() => {
+        if (wordIndex < words.length) {
+            outputDiv.innerHTML += words[wordIndex] + ' ';
+            wordIndex++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 100); 
+}

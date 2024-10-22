@@ -5,11 +5,11 @@ const { API_KEY, ASSISTANT_ID} = process.env
 
 
 const openai = new OpenAI({
-  apiKey:process.env.API_KEY,
+    apiKey: API_KEY,
 });
 
 
-const assistantId = process.env.ASSISTANT_ID;
+const assistantId = ASSISTANT_ID;
 
 let pollingInterval;
 
@@ -49,7 +49,6 @@ export class TranslingualService {
         this.logger.log(`Current status: ${status}`);
 
         if (status === 'completed') {
-            // Clear polling handled at the controller level
             const messageList = await openai.beta.threads.messages.list(threadId);
             const messages = messageList.data.map((message) => message.content);
 

@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Open Ai</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div id="app">
-      <div id="chat_container"></div>
 
-      <form>
-        <textarea name="prompt" rows="1" cols="1" placeholder="Ask codex..."></textarea>
-        <button type="submit"><img src="assets/send.svg" alt="send" />
-      </form>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maasai Translation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Maasai to English Translation</h1>
+    <textarea id="inputText" placeholder="Enter Maasai text here..." rows="5"></textarea>
+    <button id="translateBtn">Translate</button>
+
+    <!-- Loading spinner -->
+    <div id="loadingSpinner" class="spinner" style="display: none;"></div>
+
+    <div class="output">
+      <h2>Translation:</h2>
+      <div id="translationOutput"></div>
     </div>
+  </div>
 
-    <script type="module" src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+</body>
+
 </html>

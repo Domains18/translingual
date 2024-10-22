@@ -10,9 +10,8 @@ export class TranslingualController {
 
     @Post('/message')
     async message(@Body() translingualDto: translingualDto) {
-        this.logger.log(`Received message: ${translingualDto.message}`);
+        this.logger.log(`Received message: ${translingualDto.message, translingualDto.threadId}`);
 
-        // Create the message and run the assistant
         const messageResponse = await this.translingualService.addMessage(
             translingualDto.threadId,
             translingualDto.message,
@@ -26,7 +25,6 @@ export class TranslingualController {
 
         const runId = assistantRun.id;
 
-        // Wait for the assistant's run to complete and poll status
         return new Promise((resolve, reject) => {
             const pollingInterval = setInterval(async () => {
                 try {
@@ -37,7 +35,7 @@ export class TranslingualController {
 
                     if (statusResponse?.messages) {
                         clearInterval(pollingInterval);
-                        resolve(statusResponse); // Return the messages when completed
+                        resolve(statusResponse);
                     }
                 } catch (error) {
                     clearInterval(pollingInterval);
