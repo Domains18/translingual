@@ -5,11 +5,11 @@ const { API_KEY, ASSISTANT_ID} = process.env
 
 
 const openai = new OpenAI({
-  apiKey:'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',
+  apiKey:process.env.API_KEY,
 });
 
 
-const assistantId = 'asst_p7wewkPrM0T8BBgwCtXVcbbX';
+const assistantId = process.env.ASSISTANT_ID;
 
 let pollingInterval;
 
